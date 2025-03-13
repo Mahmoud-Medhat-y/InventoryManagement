@@ -2,6 +2,17 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
 
+## JSON server
+Install json server
+To start a local database JSON server (db file: "inventories_db.json"), run:
+
+```bash
+json-server --watch inventories_db.json --port 3000
+```
+
+## Angular Material
+Install Angular Material
+
 ## Development server
 
 To start a local development server, run:
