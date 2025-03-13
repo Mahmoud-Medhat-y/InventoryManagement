@@ -1,0 +1,51 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="p-3">
+
+    <h2 mat-dialog-title>Add new Item</h2>
+
+    <mat-dialog-content class="mat-typography">
+      <mat-grid-list cols="3" rowHeight="100px" gutterSize="15px">
+        <mat-grid-tile>
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="categoryId" required>
+              <mat-option [value]="null"></mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{category.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="categoryValid">{{errorMessage}}</mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field floatLabel="always" appearance="outline">
+            <mat-label>Stock Quantity</mat-label>
+            <input matInput type="number" class="example-right-align" placeholder="0" formControlName="stockQuantity"
+              [min]="0" (keydown)="preventNegative($event)" />
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+      <mat-grid-list cols="1" rowHeight="60px" class="mt-5">
+        <mat-grid-tile align="end">
+          <mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary">
+              {{data.editMode ? 'Save' : 'Add'}}
+            </button>
+          </mat-dialog-actions>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-dialog-content>
+
+  </div>
+</form>

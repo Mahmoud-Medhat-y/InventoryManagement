@@ -1,0 +1,111 @@
+<div class="container my-3">
+  <div class="row">
+    <div class="col">
+      <div class="d-flex">
+        <div class="me-2">
+          <button mat-fab extended (click)="openModal(null, false)">
+            <mat-icon>add</mat-icon>
+            Add new item
+          </button>
+        </div>
+
+        <mat-divider class="mx-2" [vertical]="true"></mat-divider>
+
+        <mat-form-field [appearance]="'outline'" class="ms-2">
+          <mat-label>Filter by name</mat-label>
+          <input matInput (keyup)="filterByName($event)" placeholder="item name" #input>
+        </mat-form-field>
+
+        <mat-divider class="mx-2" [vertical]="true"></mat-divider>
+
+        <mat-form-field [appearance]="'outline'" class="ms-2">
+          <mat-label>Status</mat-label>
+          <mat-select (selectionChange)="filterByStatus($event.value)">
+            <mat-option></mat-option>
+            @for (status of stockStatusList; track status) {
+            <mat-option [value]="status">{{status}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="filteredDataSource">
+          <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{getIndex(i)}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef> Category </th>
+            <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="stockQuantity">
+            <th mat-header-cell *matHeaderCellDef> Stock Quantity </th>
+            <td mat-cell *matCellDef="let element"> {{element.stockQuantity}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="lastUpdatedDate">
+            <th mat-header-cell *matHeaderCellDef> Last Updated Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.lastUpdatedDate | date:'dd-MM-yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="stockStatus">
+            <th mat-header-cell *matHeaderCellDef> Stock Status </th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="element.stockStatus === StockStatus.OutOfStock">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="red" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </ng-container>
+
+              <ng-container *ngIf="element.stockStatus === StockStatus.LowStock">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="yellow" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </ng-container>
+
+              <ng-container *ngIf="element.stockStatus === StockStatus.InStock">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="green" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </ng-container>
+              {{element.stockStatus | stockStatus:StockStatus}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button matTooltip="Edit" color="primary" (click)="openModal(element, true)">
+                <mat-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                    fill="#5084C1">
+                    <path
+                      d="M216-216h51l375-375-51-51-375 375v51Zm-72 72v-153l498-498q11-11 23.84-16 12.83-5 27-5 14.16 0 27.16 5t24 16l51 51q11 11 16 24t5 26.54q0 14.45-5.02 27.54T795-642L297-144H144Zm600-549-51-51 51 51Zm-127.95 76.95L591-642l51 51-25.95-25.05Z" />
+                  </svg>
+                </mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+
+
+    </div>
+  </div>
+</div>
